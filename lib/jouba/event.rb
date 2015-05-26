@@ -8,7 +8,7 @@ module Jouba
     property :timestamp, default: ->(e) { e.send(:raw_uuid).timestamp }
 
     def self.serialize(event)
-      event.to_h
+      event.serialize
     end
 
     def self.deserialize(serialized_event)
@@ -17,6 +17,10 @@ module Jouba
 
     def self.stream(key, params)
       Jouba.Store.get(key, params).map { |event| Event.deserialize(event) }
+    end
+
+    def serialize
+      to_h
     end
 
     def track
